@@ -1,38 +1,26 @@
-Role Name
+# Ansible Role: openvpn
 =========
 
-A brief description of the role goes here.
+[![Build Status](https://travis-ci.com/VeselaHouba/openvpn.svg?branch=master)](https://travis-ci.com/github/VeselaHouba/openvpn)
 
-Requirements
-------------
+Minimalistic openvpn role with CA + client cert generation
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+## Requirements
 
-Role Variables
---------------
+None,
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+## Role Variables
 
-Dependencies
-------------
+I'm too lazy for now to explain all the variables. You can find them in `defaults/main.yml` and they are split to ones you should setup and ones which are optional.
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+**Note:** `openvpn_clients` variable is structured the way it can be interchanged with my bareos role. So you can easily connect this role with bareos (run this first) and have secure connection anywhere. Isn't that great?
 
-Example Playbook
-----------------
-
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+## Example Playbook
 
     - hosts: servers
       roles:
-         - { role: username.rolename, x: 42 }
+         - { role: openvpn }
 
-License
--------
+## License
 
 BSD
-
-Author Information
-------------------
-
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
