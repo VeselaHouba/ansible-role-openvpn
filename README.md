@@ -1,5 +1,4 @@
 # Ansible Role: openvpn
-=========
 
 [![Build Status](https://travis-ci.com/VeselaHouba/openvpn.svg?branch=master)](https://travis-ci.com/github/VeselaHouba/openvpn)
 
