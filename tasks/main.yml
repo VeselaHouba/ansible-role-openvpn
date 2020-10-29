@@ -1,0 +1,38 @@
+---
+- name: Install openvpn
+  package:
+    name: openvpn
+
+- block:
+    - name: Check that CA exists
+      stat:
+        path: "{{ openvpn_ca_crt }}"
+      register: ca_result
+
+    - name: Configure CA
+      include_tasks: ca_generation.yml
+      when: not ca_result.stat.exists
+
+    - name: Temp list for this server crt/key
+      set_fact:
+        _tmp_list:
+          - name: master
+            use_vpn: true
+
+    - name: Sign server/clients with CA
+      include_tasks: sign_with_ca.yml
+      with_items: "{{ openvpn_clients + _tmp_list }}"
+      loop_control:
+        loop_var: openvpn_client
+      when: openvpn_client.use_vpn | default(openvpn_client_use_vpn_default)
+
+    - name: Configure openvpn server
+      include_tasks: configure_server.yml
+
+    - name: Register clients
+      include_tasks: configure_client.yml
+      with_items: "{{ openvpn_clients }}"
+      loop_control:
+        loop_var: openvpn_client
+      when: openvpn_client.use_vpn | default(openvpn_client_use_vpn_default)
+  when: openvpn_ca_master

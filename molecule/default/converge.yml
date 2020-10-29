@@ -1,0 +1,11 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: Print host OS info
+      debug:
+        var: ansible_lsb
+
+    - name: "Include openvpn"
+      include_role:
+        name: "openvpn"

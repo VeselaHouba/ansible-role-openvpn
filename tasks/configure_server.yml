@@ -1,0 +1,25 @@
+---
+- name: Load distro-specific vars
+  include_vars: "{{ ansible_distribution }}.yml"
+
+- name: Configure OpenVPN
+  template:
+    src: etc/openvpn/server/master.conf.j2
+    dest: "{{ _master_profile_path }}"
+    mode: 0644
+  notify: master restart
+
+- name: Create dirs for openvpn client profiles
+  file:
+    path: "/etc/openvpn/{{ item }}"
+    mode: 0755
+    state: directory
+  with_items:
+    - master
+    - client
+
+- name: Start service
+  systemd:
+    name: "{{ _master_service_name }}"
+    state: started
+    enabled: true

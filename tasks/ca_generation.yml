@@ -1,0 +1,39 @@
+---
+- name: Install dependencies
+  apt:
+    name: python3-cryptography
+
+- name: Make sure dir for CA is present
+  file:
+    path: "{{ openvpn_ca_path }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0700
+
+- name: "CA: Generate Diffie-Hellman parameters"
+  openssl_dhparam:
+    path: "{{ openvpn_ca_dh }}"
+    size: 2048
+
+- name: "CA: Generate the private key"
+  openssl_privatekey:
+    path: "{{ openvpn_ca_key }}"
+    passphrase: "{{ openvpn_ca_pass|default(omit) }}"
+    cipher: auto
+
+- name: "CA: Generate CSR"
+  openssl_csr:
+    path: "{{ openvpn_ca_csr }}"
+    privatekey_path: "{{ openvpn_ca_key }}"
+    privatekey_passphrase: "{{ openvpn_ca_pass|default(omit) }}"
+    common_name: "{{ openvpn_ca_cn }}"
+    basic_constraints: 'CA:TRUE'
+
+- name: "CA: Self-sign"
+  openssl_certificate:
+    path: "{{ openvpn_ca_crt }}"
+    privatekey_path: "{{ openvpn_ca_key }}"
+    privatekey_passphrase: "{{ openvpn_ca_pass|default(omit) }}"
+    csr_path: "{{ openvpn_ca_csr }}"
+    provider: selfsigned

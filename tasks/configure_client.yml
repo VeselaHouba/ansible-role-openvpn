@@ -1,0 +1,47 @@
+---
+- name: Slurp certificates from master
+  slurp:
+    src: "{{ item }}"
+  with_items:
+    - "{{ openvpn_ca_path }}/{{ openvpn_client.name }}.crt"
+    - "{{ openvpn_ca_path }}/{{ openvpn_client.name }}.key"
+    - "{{ openvpn_ca_crt }}"
+  register: slurpik
+
+- name: Configure client profile on master
+  template:
+    src: etc/openvpn/{{ item }}/client.conf.j2
+    dest: /etc/openvpn/{{ item }}/{{ openvpn_client.name }}
+    mode: 0644
+  with_items:
+    - master
+    - client
+
+- name: Determine what name to use
+  set_fact:
+    _client_name: "{{ openvpn_client.ansible_delegate_hostname | default(openvpn_client.name) }}"
+
+- block:
+    - name: Include distribution-specific vars
+      include_vars: "{{ hostvars[_client_name].ansible_distribution }}.yml"
+
+    - name: Configure client profile on {{ openvpn_client.name }}
+      template:
+        src: etc/openvpn/client/client.conf.j2
+        dest: "{{ _client_profile_path }}"
+        mode: 0644
+      register: vpn_reload
+      delegate_to: "{{ _client_name }}"
+
+    - name: Restart service on {{ openvpn_client.name }}
+      systemd:
+        name: "{{ _client_service_name }}"
+        state: restarted
+        enabled: true
+      when: vpn_reload.changed
+      tags: skip_ansible_lint
+      delegate_to: "{{ _client_name }}"
+  # this will skip all hosts which are not in the current playbook scope
+  when:
+    - hostvars[_client_name] is defined
+    - hostvars[_client_name].ansible_distribution is defined

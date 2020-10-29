@@ -1,0 +1,3 @@
+---
+- name: master restart
+  include_tasks: restart_master.yml

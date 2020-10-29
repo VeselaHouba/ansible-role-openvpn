@@ -1,0 +1,5 @@
+---
+_client_profile_path: /etc/openvpn/client/client.conf
+_client_service_name: openvpn-client@client
+_master_profile_path: /etc/openvpn/server/master.conf
+_master_service_name: openvpn-server@master

@@ -1,0 +1,17 @@
+---
+dependencies: []
+galaxy_info:
+  role_name: openvpn
+  author: Jan Michalek
+  license: license (BSD, MIT)
+  description: Minimalistic openvpn configuration
+  min_ansible_version: 2.8
+  platforms:
+    - name: Debian
+      versions:
+        - stretch
+        - buster
+    - name: Ubuntu
+      versions:
+        - 18.04
+        - 20.04

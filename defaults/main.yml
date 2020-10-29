@@ -1,0 +1,47 @@
+---
+####### Configuration which you should edit #########
+# Set to true on master server host_vars
+openvpn_ca_master: false
+openvpn_ca_cn: "{{ ansible_fqdn }}"
+openvpn_ca_pass: "password"
+# Clients will connect to this IP, so make sure it reachable
+openvpn_default_server_ip: "{{ ansible_default_ipv4.address|default(ansible_all_ipv4_addresses[0]) }}"
+
+# name must be FQDN - used in CN
+openvpn_clients:
+  - name: minimalistic.client.tld
+    address: 10.8.8.2
+
+  - name: full-setup.client.tld
+    address: 10.8.8.3
+    keypass: somepassword  # optional
+    ansible_delegate_hostname: some_client_name_in_inventory  # optional
+    server_ip: 192.168.0.1  # optional, otherwise openvpn_default_server_ip will be used
+    server_port: 7130  # optional, otherwise openvpn_default_server_port will be used
+    use_vpn: false  # configure openvpn for this client (default value is openvpn_client_use_vpn_default)
+
+####### Configuration after this line is optinal #########
+openvpn_ca_path: /opt/ca
+openvpn_ca_crt: "{{ openvpn_ca_path }}/{{ openvpn_ca_cn }}.crt"
+openvpn_ca_key: "{{ openvpn_ca_path }}/{{ openvpn_ca_cn }}.key"
+openvpn_ca_csr: "{{ openvpn_ca_path }}/{{ openvpn_ca_cn }}.csr"
+openvpn_ca_dh: "{{ openvpn_ca_path }}/dh.pem"
+openvpn_default_server_port: 7130
+server_extra_options: |
+  ifconfig 10.8.8.1 255.255.255.0
+  keepalive 10 120
+  cipher AES-256-CBC
+  proto tcp-server
+  txqueuelen 1000
+  verb 3
+  mode server
+  tls-server
+  dev tap0
+  port {{ openvpn_default_server_port }}
+  push "ping 15"
+  push "ping-restart 30"
+  push "persist-key"
+  push "persist-tun"
+# Should the openvpn_clients actually use the VPN by default?
+# this option is used with bareos role
+openvpn_client_use_vpn_default: true

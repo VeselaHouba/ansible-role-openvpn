@@ -1,0 +1,11 @@
+# {{ ansible_managed }}
+ca {{ openvpn_ca_crt }}
+dh {{ openvpn_ca_dh }}
+cert {{ openvpn_ca_path }}/master.crt
+key {{ openvpn_ca_path }}/master.key
+
+log-append /var/log/openvpn-master.log
+status /var/run/openvpn.master.status 10
+client-config-dir /etc/openvpn/master
+
+{{ server_extra_options | default(omit) }}
