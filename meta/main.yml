@@ -13,5 +13,5 @@ galaxy_info:
         - buster
     - name: Ubuntu
       versions:
-        - 18.04
-        - 20.04
+        - xenial
+        - focal
