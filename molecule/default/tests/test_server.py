@@ -3,9 +3,9 @@ import os
 import testinfra.utils.ansible_runner
 
 testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
-    os.environ['MOLECULE_INVENTORY_FILE']).get_hosts('server')
+    os.environ['MOLECULE_INVENTORY_FILE']).get_hosts('all')
 
 
-def test_ping_client(host):
-    client = host.addr("10.8.8.2")
-    assert client.is_reachable
+def test_openvpn_installed(host):
+    package = host.package("openvpn")
+    assert package.is_installed

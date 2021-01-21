@@ -6,19 +6,19 @@ openvpn_ca_cn: "{{ ansible_fqdn }}"
 openvpn_ca_pass: "password"
 # Clients will connect to this IP, so make sure it reachable
 openvpn_default_server_ip: "{{ ansible_default_ipv4.address|default(ansible_all_ipv4_addresses[0]) }}"
-
 # name must be FQDN - used in CN
-openvpn_clients:
-  - name: minimalistic.client.tld
-    address: 10.8.8.2
-
-  - name: full-setup.client.tld
-    address: 10.8.8.3
-    keypass: somepassword  # optional
-    ansible_delegate_hostname: some_client_name_in_inventory  # optional
-    server_ip: 192.168.0.1  # optional, otherwise openvpn_default_server_ip will be used
-    server_port: 7130  # optional, otherwise openvpn_default_server_port will be used
-    use_vpn: false  # configure openvpn for this client (default value is openvpn_client_use_vpn_default)
+openvpn_clients: {}
+# openvpn_clients:
+#   - name: minimalistic.client.tld
+#     address: 10.8.8.2
+#
+#   - name: full-setup.client.tld
+#     address: 10.8.8.3
+#     keypass: somepassword  # optional
+#     ansible_delegate_hostname: some_client_name_in_inventory  # optional
+#     server_ip: 192.168.0.1  # optional, otherwise openvpn_default_server_ip will be used
+#     server_port: 7130  # optional, otherwise openvpn_default_server_port will be used
+#     use_vpn: false  # configure openvpn for this client (default value is openvpn_client_use_vpn_default)
 
 ####### Configuration after this line is optinal #########
 openvpn_ca_path: /opt/ca
@@ -42,6 +42,7 @@ server_extra_options: |
   push "ping-restart 30"
   push "persist-key"
   push "persist-tun"
+
 # Should the openvpn_clients actually use the VPN by default?
 # this option is used with bareos role
 openvpn_client_use_vpn_default: true

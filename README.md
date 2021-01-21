@@ -1,6 +1,6 @@
 # Ansible Role: openvpn
 
-[![Build Status](https://travis-ci.com/VeselaHouba/openvpn.svg?branch=master)](https://travis-ci.com/github/VeselaHouba/openvpn)
+[![Build Status](https://drone.m-cloud.cz/api/badges/VeselaHouba/ansible-role-openvpn/status.svg)](https://drone.m-cloud.cz/VeselaHouba/ansible-role-openvpn)
 
 Minimalistic openvpn role with CA + client cert generation
 

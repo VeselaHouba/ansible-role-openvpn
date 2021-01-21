@@ -1,0 +1,12 @@
+---
+openvpn_ca_master: true
+openvpn_clients:
+  - name: client01
+    address: 10.8.8.2
+
+  - name: client02
+    address: 10.8.8.3
+    # keypass: somepassword
+    ansible_delegate_hostname: client02
+    server_port: 7130
+    use_vpn: true

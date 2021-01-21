@@ -1,37 +1,20 @@
 ---
 dependency:
   name: galaxy
-
 driver:
   name: docker
-
-lint: |
-  set -e
-  yamllint .
-  ansible-lint
-  flake8
-
 platforms:
-  - name: server
-    image: "geerlingguy/docker-${MOLECULE_DISTRO:-debian10}-ansible:latest"
+  - name: instance
+    image: "${MOLECULE_IMAGE_SERVER:-geerlingguy/docker-debian10-ansible}"
     command: ${MOLECULE_DOCKER_COMMAND:-""}
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
-    privileged: true
-    pre_build_image: true
-
-  - name: client
-    image: "geerlingguy/docker-${MOLECULE_DISTRO:-debian10}-ansible:latest"
-    command: ${MOLECULE_DOCKER_COMMAND:-""}
-    volumes:
-      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    capabilities:
+      - SYS_ADMIN
     privileged: true
     pre_build_image: true
 
 provisioner:
   name: ansible
-  playbooks:
-    converge: ${MOLECULE_PLAYBOOK:-converge.yml}
-
 verifier:
   name: testinfra

@@ -1,0 +1,40 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: docker
+platforms:
+  - name: server
+    image: "${MOLECULE_IMAGE_SERVER:-geerlingguy/docker-debian10-ansible}"
+    command: ${MOLECULE_DOCKER_COMMAND:-""}
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    capabilities:
+      - SYS_ADMIN
+    privileged: true
+    pre_build_image: true
+
+  - name: client01
+    image: "${MOLECULE_IMAGE_CLIENT:-geerlingguy/docker-debian10-ansible}"
+    command: ${MOLECULE_DOCKER_COMMAND:-""}
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    capabilities:
+      - SYS_ADMIN
+    privileged: true
+    pre_build_image: true
+
+  - name: client02
+    image: "${MOLECULE_IMAGE_CLIENT:-geerlingguy/docker-debian10-ansible}"
+    command: ${MOLECULE_DOCKER_COMMAND:-""}
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    capabilities:
+      - SYS_ADMIN
+    privileged: true
+    pre_build_image: true
+
+provisioner:
+  name: ansible
+verifier:
+  name: testinfra
