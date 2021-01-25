@@ -24,6 +24,7 @@
       with_items: "{{ openvpn_clients + _tmp_list }}"
       loop_control:
         loop_var: openvpn_client
+        label: "{{ openvpn_client.name }}"
       when: openvpn_client.use_vpn | default(openvpn_client_use_vpn_default)
 
     - name: Configure openvpn server
@@ -34,5 +35,6 @@
       with_items: "{{ openvpn_clients }}"
       loop_control:
         loop_var: openvpn_client
+        label: "{{ openvpn_client.name }}"
       when: openvpn_client.use_vpn | default(openvpn_client_use_vpn_default)
   when: openvpn_ca_master
