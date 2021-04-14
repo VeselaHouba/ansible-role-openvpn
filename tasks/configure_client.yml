@@ -10,7 +10,7 @@
 
 - name: Configure client profile on master
   template:
-    src: etc/openvpn/{{ item }}/client.conf.j2
+    src: etc/openvpn/{{ item }}/client_{{ openvpn_tuntap }}.conf.j2
     dest: /etc/openvpn/{{ item }}/{{ openvpn_client.name }}
     mode: 0644
   with_items:
@@ -27,7 +27,7 @@
 
     - name: Configure client profile on {{ openvpn_client.name }}
       template:
-        src: etc/openvpn/client/client.conf.j2
+        src: etc/openvpn/client/client_{{ openvpn_tuntap }}.conf.j2
         dest: "{{ _client_profile_path }}"
         mode: 0644
       register: vpn_reload

@@ -1,0 +1,38 @@
+---
+openvpn_ca_master: true
+openvpn_tuntap: tun
+openvpn_clients:
+  - name: client01
+    address: 10.8.8.2
+    peer_ip: 10.8.8.1
+
+  - name: client02
+    address: 10.8.8.3
+    peer_ip: 10.8.8.1
+    # keypass: somepassword
+    ansible_delegate_hostname: client02
+    server_port: 7130
+    use_vpn: true
+
+server_extra_options: |
+  topology subnet
+  ifconfig 10.8.8.1 255.255.255.0
+  ifconfig-pool 10.8.8.50 10.8.8.100
+  keepalive 10 120
+  cipher AES-256-CBC
+  client-to-client
+  proto tcp-server
+  txqueuelen 1000
+  verb 3
+  mode server
+  tls-server
+  dev tun0
+  port {{ openvpn_default_server_port }}
+  link-mtu 1544
+  keysize 256
+  push "route-gateway 10.8.8.1"
+  push "ping 15"
+  push "ping-restart 30"
+  push "persist-key"
+  push "persist-tun"
+  comp-lzo yes

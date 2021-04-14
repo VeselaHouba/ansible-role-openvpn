@@ -2,6 +2,8 @@
 ####### Configuration which you should edit #########
 # Set to true on master server host_vars
 openvpn_ca_master: false
+# server technology to use. tun or tap
+openvpn_tuntap: tap
 openvpn_ca_cn: "{{ ansible_fqdn }}"
 openvpn_ca_pass: "password"
 # Clients will connect to this IP, so make sure it reachable
@@ -19,6 +21,7 @@ openvpn_clients: {}
 #     server_ip: 192.168.0.1  # optional, otherwise openvpn_default_server_ip will be used
 #     server_port: 7130  # optional, otherwise openvpn_default_server_port will be used
 #     use_vpn: false  # configure openvpn for this client (default value is openvpn_client_use_vpn_default)
+#     peer_ip: 10.8.8.1 # local server IP - used as peer in case of tun config
 
 ####### Configuration after this line is optinal #########
 openvpn_ca_path: /opt/ca
@@ -42,6 +45,30 @@ server_extra_options: |
   push "ping-restart 30"
   push "persist-key"
   push "persist-tun"
+
+# tun server version example
+# server_extra_options: |
+#   topology subnet
+#   ifconfig 192.168.200.1 255.255.255.0
+#   ifconfig-pool 192.168.200.50 192.168.200.100
+#   keepalive 10 120
+#   cipher AES-256-CBC
+#   client-to-client
+#   proto tcp-server
+#   txqueuelen 1000
+#   verb 3
+#   mode server
+#   tls-server
+#   dev tun0
+#   port 7103
+#   link-mtu 1544
+#   keysize 256
+#   push "route-gateway 192.168.200.1"
+#   push "ping 15"
+#   push "ping-restart 30"
+#   push "persist-key"
+#   push "persist-tun"
+#   comp-lzo yes
 
 # Should the openvpn_clients actually use the VPN by default?
 # this option is used with bareos role

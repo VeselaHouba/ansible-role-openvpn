@@ -1,0 +1,22 @@
+---
+- name: Prepare
+  hosts: all
+  tasks:
+    - name: Install packages which are usually present
+      apt:
+        update_cache: true
+        name:
+          - locales
+          - tzdata
+          - apt-transport-https
+
+    - name: Install dependencies for verify phase
+      apt:
+        name:
+          - iputils-ping
+
+    - name: Print current images versions
+      debug:
+        msg: |
+          "MOLECULE_IMAGE_CLIENT: '{{ lookup('env', 'MOLECULE_IMAGE_CLIENT') }}'"
+          "MOLECULE_IMAGE_SERVER: '{{ lookup('env', 'MOLECULE_IMAGE_SERVER') }}'"
