@@ -1,2 +1,5 @@
 # {{ ansible_managed }}
 ifconfig-push {{ openvpn_client.address }} {{ openvpn_client.peer_ip }}
+{% if openvpn_client.extra_options is defined %}
+{{ openvpn_client.extra_options }}
+{% endif %}

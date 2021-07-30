@@ -1,2 +1,5 @@
 # {{ ansible_managed }}
 ifconfig-push {{ openvpn_client.address }} 255.255.255.0
+{% if openvpn_client.extra_options is defined %}
+{{ openvpn_client.extra_options }}
+{% endif %}
