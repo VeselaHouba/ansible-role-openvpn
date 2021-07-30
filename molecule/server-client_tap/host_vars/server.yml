@@ -10,3 +10,5 @@ openvpn_clients:
     ansible_delegate_hostname: client02
     server_port: 7130
     use_vpn: true
+    extra_options: |
+      push "route 1.1.1.1 255.255.255.255 10.8.8.1"

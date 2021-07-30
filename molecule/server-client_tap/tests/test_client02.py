@@ -10,3 +10,8 @@ def test_ping_server(host):
     server = host.addr("10.8.8.1")
     assert server.port(7130).is_reachable
     assert server.is_reachable
+
+
+def test_custom_route(host):
+    routes = host.run("ip r")
+    assert "1.1.1.1" in routes.stdout
