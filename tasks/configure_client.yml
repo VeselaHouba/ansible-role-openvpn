@@ -11,7 +11,7 @@
 - name: Configure client profile on master
   template:
     src: etc/openvpn/{{ item }}/client_{{ openvpn_tuntap }}.conf.j2
-    dest: /etc/openvpn/{{ item }}/{{ openvpn_client.name }}
+    dest: /etc/openvpn/{{ item }}/{{ openvpn_client.name }}{{ '.ovpn' if item == 'client' else '' }}
     mode: 0644
   with_items:
     - master
