@@ -2,6 +2,7 @@
 dependencies: []
 galaxy_info:
   role_name: openvpn
+  namespace: veselahouba
   author: Jan Michalek
   license: license (BSD, MIT)
   description: Minimalistic openvpn configuration
