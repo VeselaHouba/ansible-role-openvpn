@@ -12,7 +12,7 @@
 - name: Create dirs for openvpn client profiles
   file:
     path: "/etc/openvpn/{{ item }}"
-    mode: 0755
+    mode: 0700
     state: directory
   with_items:
     - master
