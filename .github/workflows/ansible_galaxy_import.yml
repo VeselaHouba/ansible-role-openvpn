@@ -1,0 +1,22 @@
+---
+name: Import Role to Ansible Galaxy
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - '*'
+
+jobs:
+  import_to_galaxy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Import to Ansible Galaxy
+        env:
+          ANSIBLE_GALAXY_API_KEY: ${{ secrets.ANSIBLE_GALAXY_API_KEY }}
+        run: |
+          ansible-galaxy role import --api-key=$ANSIBLE_GALAXY_API_KEY ${{ github.repository_owner }} ${{ github.event.repository.name }}
