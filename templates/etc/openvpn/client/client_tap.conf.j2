@@ -10,7 +10,7 @@ persist-tun
 verb 3
 log-append /var/log/openvpn-client.log
 cipher AES-256-CBC
-keysize 256
+# keysize 256
 <cert>
 {{ slurpik.results[0].content|b64decode }}
 </cert>
